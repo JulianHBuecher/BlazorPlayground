@@ -1,0 +1,35 @@
+﻿@page "/todo"
+
+<h3>Todo (@todos.Count(todo => !todo.IsDone))</h3>
+
+<ul>
+    <Virtualize Context="todo" Items="todos">
+        <li>
+            <input type="checkbox" @bind="todo.IsDone" />
+            <input @bind="todo.Title" />
+        </li>
+    </Virtualize>
+</ul>
+
+<input placeholder="Something to do..." @bind="newTodoTitle" />
+<button class="btn btn-primary" @onclick="AddTodo">Add todo</button>
+
+@code {
+    // Blazor uses in standard mode the open iconic icons
+
+    private IList<TodoItem> todos = new List<TodoItem>();
+    private string newTodoTitle;
+    private void AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(newTodoTitle))
+        {
+            todos.Add(new TodoItem
+            {
+                Title = newTodoTitle,
+                IsDone = false
+            });
+            newTodoTitle = string.Empty;
+        }
+    }
+
+}
